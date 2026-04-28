@@ -1,0 +1,125 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Veriflow Brand Colors */
+  --pure-blue: #0000FF;
+  --royal-navy: #0530AD;
+  --deep-ocean: #004170;
+
+  /* Backgrounds */
+  --app-bg: #00040F;
+  --surface: #000D1F;
+  --surface-raised: #001433;
+  --vf-border: #002456;
+
+  /* Text */
+  --text-primary: #E8F0FF;
+  --text-secondary: #7A9AC8;
+  --text-muted: #3A5480;
+
+  /* Semantic */
+  --alert-red: #FF3B3B;
+  --warning-amber: #FF8C00;
+  --success-green: #00C896;
+
+  /* Tints */
+  --blue-tint: #0530AD1A;
+  --red-tint: #FF3B3B1A;
+  --amber-tint: #FF8C001A;
+  --green-tint: #00C8961A;
+
+  /* Default theme mappings */
+  --font-size: 14px;
+  --background: var(--app-bg);
+  --foreground: var(--text-primary);
+  --card: var(--surface);
+  --card-foreground: var(--text-primary);
+  --primary: var(--pure-blue);
+  --primary-foreground: #ffffff;
+  --secondary: var(--royal-navy);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--surface-raised);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--pure-blue);
+  --accent-foreground: #ffffff;
+  --destructive: var(--alert-red);
+  --destructive-foreground: #ffffff;
+  --border: var(--vf-border);
+  --input: var(--surface-raised);
+  --ring: var(--pure-blue);
+  --font-weight-medium: 600;
+  --font-weight-normal: 500;
+  --radius: 8px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Rajdhani', sans-serif;
+    overflow: hidden;
+  }
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+  }
+
+  button {
+    font-weight: var(--font-weight-medium);
+  }
+
+  input {
+    font-weight: var(--font-weight-normal);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--surface);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-raised);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--vf-border);
+  }
+}

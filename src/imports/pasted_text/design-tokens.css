@@ -1,0 +1,222 @@
+
+GLOBAL STYLE
+- Font: Inter or JetBrains Mono for plate numbers
+- Color palette:
+
+  BRAND COLORS (primary palette):
+  · Pure Blue:       #0000FF  — primary accent, 
+                                active states, CTAs
+  · Royal Navy:      #0530AD  — buttons, selected items, 
+                                highlights
+  · Deep Ocean:      #004170  — secondary accent, 
+                                headers, section titles
+
+  BACKGROUNDS (dark variants of brand):
+  · App background:  #00040F  — near-black blue-tinted bg
+  · Surface:         #000D1F  — card/panel background
+  · Surface raised:  #001433  — elevated surface
+  · Border:          #002456  — subtle borders
+
+  TEXT:
+  · Text primary:    #E8F0FF  — main text (blue-white)
+  · Text secondary:  #7A9AC8  — subtext, labels
+  · Text muted:      #3A5480  — placeholder, timestamps
+
+  SEMANTIC COLORS (blue-family variants):
+  · Alert/danger:    #FF3B3B  — hotlist alerts, errors
+  · Warning:         #FF8C00  — unknown plates, warnings
+  · Success:         #00C896  — clear plates, online status
+  · Info highlight:  #0000FF  — same as primary blue
+
+  TINTS & OVERLAYS:
+  · Blue tint bg:    #0530AD1A — selected row background
+  · Red tint bg:     #FF3B3B1A — alert row background
+  · Amber tint bg:   #FF8C001A — warning row background
+  · Green tint bg:   #00C8961A — success row background
+
+- Border radius: 8px for cards, 4px for tags/badges
+- All numbers in tabular-nums, monospace for plate text
+- Subtle blue glow on active/focused elements: 
+  box-shadow 0 0 0 2px #0000FF40
+
+---
+
+LAYOUT STRUCTURE
+Fixed top status bar (36px height) + scrollable content 
+area + fixed bottom navigation bar (56px height).
+
+---
+
+SCREEN 1 — LIVE MONITOR (default screen)
+Split into two columns: left (wider) and right sidebar (280px).
+
+LEFT COLUMN (top to bottom):
+1. Camera feed panel (16:9 aspect ratio)
+   - Very dark navy background (#00040F) simulating 
+     CCTV footage
+   - ROI (Region of Interest) box overlay with corner 
+     brackets in #0000FF
+   - Animated horizontal scan line in #0000FF (60% opacity)
+   - Simulated vehicle with white license plate chip 
+     showing "BFZ N63X"
+   - Top-left overlay: "CAM-01 · 2026-03-25 · REC ●" 
+     in monospace, #7A9AC8
+   - Top-right overlay: "29.97 fps" in #00C896 monospace
+   - Bottom-right buttons: HD · PTZ · ⛶
+     (background: #001433, border: #002456)
+
+2. Plate capture row (below camera feed)
+   - Left side:
+     · Small label "Last captured plate" (#3A5480, 10px)
+     · Large plate number "BFZ N63X" (26px, monospace, 
+       letter-spacing 4px, color #E8F0FF)
+     · Red badge "🚨 Alert — Hotlist match" 
+       (bg: #FF3B3B1A, text: #FF3B3B)
+   - Right side metadata (key: #3A5480, value: #E8F0FF):
+     · Confidence: 98.4%
+     · Region: Gujarat, IN
+     · Camera: CAM-01
+     · Time: live clock
+
+3. Stats strip (4 equal columns, bg: #000D1F):
+   · Reads today: 1,482  (text: #E8F0FF)
+   · Alerts today: 7     (text: #FF3B3B)
+   · Accuracy: 99.1%     (text: #E8F0FF)
+   · Online: 4/4         (text: #00C896)
+   Dividers between cells: 0.5px #002456
+
+4. Recent reads table header:
+   - Title "Recent reads" in #E8F0FF
+   - Filter pills: All (active: bg #0000FF, text white) · 
+     Alerts · Clear (inactive: border #002456, 
+     text #7A9AC8)
+
+5. Scrollable reads table:
+   Columns: Status dot | Plate | Time | Camera | Status tag
+   - Header row bg: #000D1F, text #3A5480
+   - Row borders: 0.5px #002456
+   - Alert row bg tint: #FF3B3B1A
+   - Hover row bg: #001433
+   - Status dots: red #FF3B3B / green #00C896 / 
+     amber #FF8C00
+   - Status tags as colored pills matching dot colors
+
+RIGHT SIDEBAR (bg: #000D1F, border-left: 0.5px #002456):
+1. "Cameras" section
+   - Section title: #3A5480 uppercase 10px
+   - 4 camera rows: dark thumbnail (#00040F), 
+     green online dot, name in #E8F0FF, 
+     sub in #3A5480, "Online" in #00C896
+   - Selected row: bg #0530AD1A, 
+     left border 2px #0000FF
+
+2. "Active alerts" section
+   - Alert icon bg: red #FF3B3B1A / amber #FF8C001A
+   - Title #E8F0FF, sub #3A5480, time #3A5480
+
+3. "Hotlist lookup" section
+   - Search input: bg #001433, border #002456, 
+     text #E8F0FF, placeholder #3A5480
+   - Focus ring: #0000FF40
+   - Tags: Stolen (red), Wanted (amber), Permit (green)
+
+---
+
+SCREEN 2 — HISTORY
+- Filter bar (bg #000D1F, border #002456, radius 8px):
+  Inputs bg #001433, border #002456
+  Search button: bg #0000FF, text white
+  Export button: bg #0530AD1A, text #0000FF, 
+  border #0530AD
+- Table:
+  Header bg #001433, text #3A5480
+  Rows border 0.5px #002456
+  Hover bg #001433
+  8+ sample rows with mixed statuses
+
+---
+
+SCREEN 3 — REPORTS
+- 2x2 report type cards (bg #000D1F, border #002456):
+  On hover: border #0530AD
+  Icon area bg: #0530AD1A
+  📊 Daily reads summary
+  🚨 Alert log report
+  🎯 Accuracy report
+  📅 Weekly trend
+
+- Bar chart "Reads per hour — today":
+  Bar fill: #0530AD
+  Active/tallest bar: #0000FF
+  Bar bg track: #001433
+  Axis labels: #3A5480
+
+- Alert type breakdown:
+  Stolen: #FF3B3B dot + count
+  Wanted: #FF8C00 dot + count
+
+---
+
+SCREEN 4 — SETTINGS
+All setting group cards: bg #000D1F, border #002456
+
+1. "Camera settings" — 4 rows with chevron (color #3A5480)
+
+2. "LPR settings":
+   · Confidence threshold — value + chevron
+   · Alert sound — toggle ON (track: #0000FF, knob: white)
+   · Auto-capture — toggle ON
+   · Save to database — toggle ON
+
+3. "Hotlist":
+   · Manage entries (12 active) — chevron
+   · Auto-sync — toggle ON
+
+4. "System":
+   · Server: 192.168.1.100:5000 — 
+     "Connected" in #00C896
+   · Data retention: 90 days — chevron
+   · Version: Veriflow 1.0.0
+
+---
+
+TOP STATUS BAR (bg #000D1F, border-bottom 0.5px #002456)
+- Left: 
+  · Circle dot #0000FF + "Veriflow" in #E8F0FF bold
+  · "Live" badge: bg #FF3B3B1A, text #FF3B3B, 
+    pulsing dot
+- Right:
+  · "4/4 cameras" in #00C896
+  · Live clock in #7A9AC8
+
+---
+
+BOTTOM NAVIGATION BAR 
+(bg #000D1F, border-top 0.5px #002456, height 56px)
+
+4 equal tabs:
+  📹 Monitor | 🕓 History | 📊 Reports | ⚙ Settings
+
+Active tab:
+  · Icon + label: #0000FF
+  · Top indicator bar: 2px solid #0000FF
+  · Background tint: #0000FF0D
+
+Inactive tab:
+  · Icon + label: #3A5480
+
+---
+
+COMPONENT NOTES
+- App name throughout: Veriflow
+- Brand color hierarchy: 
+    #0000FF → primary actions & active states
+    #0530AD → secondary actions & selections  
+    #004170 → tertiary accents & section headers
+- Plate numbers: monospace, letter-spacing 3-4px, #E8F0FF
+- Toggles: 32x18px, track #0000FF when ON
+- All borders: 0.5px #002456
+- No drop shadows — use border + bg contrast only
+- Spacing system: 8px base unit
+- Subtle blue ambient glow on scan line and 
+  ROI box in camera feed
