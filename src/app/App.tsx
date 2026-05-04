@@ -10,30 +10,55 @@ import { Settings } from './components/screens/Settings';
 export default function App() {
   const [activeTab, setActiveTab] = useState('monitor');
 
-  const renderScreen = () => {
-    switch (activeTab) {
-      case 'monitor':
-        return <LiveMonitor />;
-      case 'history':
-        return <History />;
-      case 'violations':
-        return <Violations />;
-      case 'reports':
-        return <Reports />;
-      case 'settings':
-        return <Settings />;
-      default:
-        return <LiveMonitor />;
-    }
-  };
+  const screen = {
+    monitor:    <LiveMonitor onNavigate={setActiveTab} />,
+    history:    <History />,
+    violations: <Violations />,
+    reports:    <Reports />,
+    settings:   <Settings />,
+  }[activeTab] ?? <LiveMonitor />;
 
   return (
-    <div className="size-full flex flex-col bg-[var(--app-bg)]">
-      <StatusBar />
-      <div className="flex-1 overflow-hidden">
-        {renderScreen()}
+    /* Ambient dark background — simulates the environment outside the tablet */
+    <div style={{
+      width: '100vw',
+      height: '100vh',
+      background: 'radial-gradient(ellipse at 50% 40%, #010c35 0%, #010412 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    }}>
+      {/* Tablet frame */}
+      <div style={{
+        width: 'min(1280px, 98vw)',
+        height: 'min(800px, 96vh)',
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#01061a',
+        borderRadius: 18,
+        border: '2px solid #0b1f5c',
+        boxShadow:
+          '0 0 0 1px rgba(77,114,232,0.06), ' +
+          '0 8px 48px rgba(0,0,0,0.85), ' +
+          'inset 0 1px 0 rgba(77,114,232,0.06)',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        {/* Subtle top-bezel shine */}
+        <div style={{
+          position: 'absolute', top: 0, left: '10%', right: '10%', height: 1,
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)',
+          pointerEvents: 'none',
+          zIndex: 10,
+        }} />
+
+        <StatusBar />
+        <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+          {screen}
+        </div>
+        <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
-      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   );
 }
