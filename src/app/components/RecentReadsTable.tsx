@@ -1,113 +1,120 @@
 import { useState } from 'react';
 
-interface Read {
-  id: number;
+type Status = 'alert' | 'clear' | 'unknown' | 'stolen';
+
+interface Row {
   plate: string;
   time: string;
   camera: string;
-  status: 'alert' | 'clear' | 'unknown';
-  statusLabel: string;
+  status: Status;
+  label: string;
 }
 
-const mockReads: Read[] = [
-  { id: 1, plate: '7XYZ492', time: '14:23:45', camera: 'CAM-01', status: 'alert', statusLabel: 'Hotlist' },
-  { id: 2, plate: 'ABC-1234', time: '14:22:18', camera: 'CAM-02', status: 'clear', statusLabel: 'Clear' },
-  { id: 3, plate: 'TX5KM987', time: '14:21:03', camera: 'CAM-01', status: 'clear', statusLabel: 'Clear' },
-  { id: 4, plate: 'FL8923K', time: '14:19:47', camera: 'CAM-03', status: 'unknown', statusLabel: 'Unknown' },
-  { id: 5, plate: 'NY5HJ729', time: '14:18:22', camera: 'CAM-04', status: 'clear', statusLabel: 'Clear' },
-  { id: 6, plate: 'IL3BN456', time: '14:16:55', camera: 'CAM-02', status: 'clear', statusLabel: 'Clear' },
-  { id: 7, plate: 'TX7BK891', time: '14:15:30', camera: 'CAM-01', status: 'alert', statusLabel: 'Stolen' },
-  { id: 8, plate: 'CA8WP234', time: '14:14:12', camera: 'CAM-03', status: 'clear', statusLabel: 'Clear' },
+const ROWS: Row[] = [
+  { plate: '7XYZ492',  time: '14:23:45', camera: 'LYNET-01', status: 'alert',   label: 'Hotlist' },
+  { plate: 'ABC1234', time: '14:22:18', camera: 'LYNET-02', status: 'clear',   label: 'Clear'   },
+  { plate: 'TX5KM987', time: '14:21:03', camera: 'LYNET-01', status: 'clear',   label: 'Clear'   },
+  { plate: 'FL8923K',  time: '14:19:47', camera: 'LYNET-03', status: 'unknown', label: 'Unknown' },
+  { plate: 'TX7BK891', time: '14:15:30', camera: 'LYNET-01', status: 'stolen',  label: 'Stolen'  },
 ];
 
-export function RecentReadsTable() {
-  const [filter, setFilter] = useState<'all' | 'alerts' | 'clear'>('all');
+const DOT: Record<Status, string> = {
+  alert:   '#ef4444',
+  stolen:  '#ef4444',
+  clear:   '#22c55e',
+  unknown: '#eab308',
+};
 
-  const filteredReads = mockReads.filter((read) => {
-    if (filter === 'all') return true;
-    if (filter === 'alerts') return read.status === 'alert';
-    if (filter === 'clear') return read.status === 'clear';
+function Badge({ status, label }: { status: Status; label: string }) {
+  const c = DOT[status];
+  return (
+    <span style={{
+      padding: '1px 7px', borderRadius: 3, fontSize: 10, fontWeight: 600,
+      background: `${c}18`, border: `1px solid ${c}44`, color: c,
+    }}>
+      {label}
+    </span>
+  );
+}
+
+const FILTERS = ['All', 'Alerts', 'Clear'] as const;
+
+export function RecentReadsTable() {
+  const [filter, setFilter] = useState<typeof FILTERS[number]>('All');
+
+  const rows = ROWS.filter(r => {
+    if (filter === 'Alerts') return r.status === 'alert' || r.status === 'stolen';
+    if (filter === 'Clear')  return r.status === 'clear';
     return true;
   });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'alert': return 'var(--alert-red)';
-      case 'clear': return 'var(--success-green)';
-      case 'unknown': return 'var(--warning-amber)';
-      default: return 'var(--text-muted)';
-    }
-  };
-
-  const getRowBg = (status: string) => {
-    if (status === 'alert') return 'var(--red-tint)';
-    return 'transparent';
-  };
-
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <h3 className="text-[var(--text-primary)] font-semibold">Recent reads</h3>
-        <div className="flex gap-2">
-          {(['all', 'alerts', 'clear'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-                filter === f
-                  ? 'bg-[var(--pure-blue)] text-white'
-                  : 'border border-[var(--vf-border)] text-[var(--text-secondary)] hover:border-[var(--pure-blue)]'
-              }`}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
+    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+      {/* Header */}
+      <div style={{
+        flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '5px 10px', background: '#020b2e', borderBottom: '1px solid #0b1f5c',
+      }}>
+        <span style={{ fontSize: 10, color: '#7a9cc8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          Recent Reads
+        </span>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {FILTERS.map(f => (
+            <button key={f} onClick={() => setFilter(f)} style={{
+              padding: '1px 8px', borderRadius: 3, fontSize: 9, fontWeight: 700,
+              border: '1px solid',
+              borderColor: filter === f ? '#4d72e8' : '#0b1f5c',
+              background: filter === f ? 'rgba(77,114,232,0.12)' : 'transparent',
+              color: filter === f ? '#4d72e8' : '#2d4280',
+              textTransform: 'uppercase', letterSpacing: '0.04em',
+              transition: 'all 0.12s',
+            }}>
+              {f}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="bg-[var(--surface)] border border-[var(--vf-border)] rounded-lg overflow-hidden">
-        <table className="w-full">
+      {/* Scrollable body */}
+      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
           <thead>
-            <tr className="bg-[var(--surface)] border-b border-[var(--vf-border)]">
-              <th className="text-left px-4 py-2 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold w-12"></th>
-              <th className="text-left px-4 py-2 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Plate</th>
-              <th className="text-left px-4 py-2 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Time</th>
-              <th className="text-left px-4 py-2 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Camera</th>
-              <th className="text-left px-4 py-2 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Status</th>
+            <tr style={{ background: '#020b2e', position: 'sticky', top: 0, zIndex: 1 }}>
+              {[['', '20px'], ['Plate', ''], ['Time', '80px'], ['Camera', '72px'], ['Status', '80px']].map(([h, w], i) => (
+                <th key={i} style={{
+                  textAlign: 'left', padding: '4px 8px',
+                  fontSize: 9, color: '#7a9cc8',
+                  textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600,
+                  borderBottom: '1px solid #0b1f5c',
+                  width: w || 'auto',
+                }}>
+                  {h}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {filteredReads.map((read) => (
-              <tr
-                key={read.id}
-                className="border-b border-[var(--vf-border)] last:border-b-0 hover:bg-[var(--surface-raised)] transition-colors cursor-pointer"
-                style={{ backgroundColor: getRowBg(read.status) }}
-              >
-                <td className="px-4 py-3">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: getStatusColor(read.status) }}
-                  />
+            {rows.map((r, i) => (
+              <tr key={i} style={{
+                borderBottom: '1px solid #0b1f5c',
+                background: (r.status === 'alert' || r.status === 'stolen')
+                  ? 'rgba(239,68,68,0.04)' : 'transparent',
+              }}>
+                <td style={{ padding: '5px 8px' }}>
+                  <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: DOT[r.status] }} />
                 </td>
-                <td className="px-4 py-3 text-[var(--text-primary)] font-mono font-semibold tracking-wider">
-                  {read.plate}
+                <td style={{ padding: '5px 8px', color: '#dce5f5', fontWeight: 700, fontSize: 11, letterSpacing: '0.1em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {r.plate}
                 </td>
-                <td className="px-4 py-3 text-[var(--text-secondary)] font-mono text-sm">
-                  {read.time}
+                <td style={{ padding: '5px 8px', color: '#7a9cc8', fontSize: 11 }}>
+                  {r.time}
                 </td>
-                <td className="px-4 py-3 text-[var(--text-secondary)] font-mono text-sm">
-                  {read.camera}
+                <td style={{ padding: '5px 8px', color: '#7a9cc8', fontSize: 11 }}>
+                  {r.camera}
                 </td>
-                <td className="px-4 py-3">
-                  <span
-                    className="px-2 py-1 rounded-full text-xs font-semibold"
-                    style={{
-                      backgroundColor: `${getStatusColor(read.status)}1A`,
-                      color: getStatusColor(read.status),
-                    }}
-                  >
-                    {read.statusLabel}
-                  </span>
+                <td style={{ padding: '5px 8px' }}>
+                  <Badge status={r.status} label={r.label} />
                 </td>
               </tr>
             ))}

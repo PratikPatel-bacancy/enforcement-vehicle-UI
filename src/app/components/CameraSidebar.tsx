@@ -1,125 +1,168 @@
-import { Search, AlertCircle, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { Search, ShieldAlert, AlertTriangle } from 'lucide-react';
 
-interface CameraSidebarProps {
-  selectedCamera: string;
-  onCameraSelect: (cameraId: string) => void;
+const CAMERAS = [
+  { name: 'LYNET-01', location: 'North Entrance' },
+  { name: 'LYNET-02', location: 'Employee Parking' },
+  // { name: 'LYNET-03', location: 'Exit Gate South' },
+  // { name: 'LYNET-04', location: 'Loading Dock' },
+];
+
+const ALERTS = [
+  { plate: '7XYZ492',  type: 'Hotlist match',      time: '2m ago',  high: true },
+  { plate: 'TX7BK891', type: 'Stolen vehicle',      time: '8m ago',  high: true },
+  { plate: 'FL8923K',  type: 'Unregistered plate',  time: '15m ago', high: false },
+];
+
+const PILLS = [
+  { label: 'Stolen',  count: 124, color: '#ef4444' },
+  { label: 'Wanted',  count: 58,  color: '#eab308' },
+  { label: 'Permit',  count: 312, color: '#22c55e' },
+];
+
+function SectionHead({ title, count }: { title: string; count?: number }) {
+  return (
+    <div style={{ padding: '6px 10px 4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <span style={{ fontSize: 9, color: '#2d4280', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+        {title}
+      </span>
+      {count !== undefined && (
+        <span style={{ fontSize: 9, color: '#2d4280' }}>{count}</span>
+      )}
+    </div>
+  );
 }
 
-export function CameraSidebar({ selectedCamera, onCameraSelect }: CameraSidebarProps) {
-  const cameras = [
-    { id: 1, name: 'CAM-01', location: 'North Entrance', status: 'online' },
-    { id: 2, name: 'CAM-02', location: 'Employee Parking', status: 'online' },
-    { id: 3, name: 'CAM-03', location: 'Exit Gate South', status: 'online' },
-    { id: 4, name: 'CAM-04', location: 'Loading Dock', status: 'online' },
-  ];
+interface Props {
+  selectedCamera: string;
+  onCameraSelect: (id: string) => void;
+}
 
-  const alerts = [
-    { id: 1, plate: '7XYZ492', type: 'Hotlist match', time: '2m ago', severity: 'high' },
-    { id: 2, plate: 'TX7BK891', type: 'Stolen vehicle', time: '8m ago', severity: 'high' },
-    { id: 3, plate: 'FL8923K', type: 'Unregistered plate', time: '15m ago', severity: 'medium' },
-  ];
-
-  const hotlistTags = [
-    { label: 'Stolen', count: 124, color: 'var(--alert-red)' },
-    { label: 'Wanted', count: 58, color: 'var(--warning-amber)' },
-    { label: 'Permit', count: 312, color: 'var(--success-green)' },
-  ];
-
+export function CameraSidebar({ selectedCamera, onCameraSelect }: Props) {
   return (
-    <div className="w-72 bg-[var(--surface)] border-l border-[var(--vf-border)] flex flex-col">
-      {/* Cameras Section */}
-      <div className="p-4 border-b border-[var(--vf-border)]">
-        <h4 className="text-[var(--text-muted)] text-[10px] uppercase tracking-wide mb-3">Cameras</h4>
-        <div className="flex flex-col gap-2">
-          {cameras.map((camera) => {
-            const isSelected = selectedCamera === camera.name;
+    <div style={{
+      width: 200,
+      flexShrink: 0,
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden',
+      background: '#020b2e',
+      borderLeft: '1px solid #0b1f5c',
+    }}>
+
+      {/* ── Camera list ── */}
+      <div style={{ flexShrink: 0, borderBottom: '1px solid #0b1f5c' }}>
+        <SectionHead title="Cameras" count={4} />
+        <div style={{ padding: '0 6px 6px' }}>
+          {CAMERAS.map(cam => {
+            const sel = selectedCamera === cam.name;
             return (
-            <div
-              key={camera.id}
-              onClick={() => onCameraSelect(camera.name)}
-              className={`flex items-center gap-3 p-2 rounded cursor-pointer transition-colors relative ${
-                isSelected
-                  ? 'bg-[var(--blue-tint)] border-l-2 border-[var(--pure-blue)]'
-                  : 'hover:bg-[var(--surface-raised)]'
-              }`}
-            >
-              <div className="w-12 h-8 bg-[var(--app-bg)] rounded border border-[var(--vf-border)] flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-[var(--text-primary)] text-sm font-semibold font-mono">
-                    {camera.name}
-                  </span>
-                  <div className="w-1.5 h-1.5 rounded-full bg-[var(--success-green)]" />
+              <div
+                key={cam.name}
+                onClick={() => onCameraSelect(cam.name)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 7,
+                  padding: '5px 6px', borderRadius: 3, cursor: 'pointer',
+                  background: sel ? 'rgba(77,114,232,0.08)' : 'transparent',
+                  borderLeft: sel ? '2px solid #0530AD' : '2px solid transparent',
+                  marginBottom: 2,
+                  transition: 'background 0.12s',
+                }}
+              >
+                {/* Mini cam icon */}
+                <div style={{
+                  width: 32, height: 20, flexShrink: 0,
+                  background: '#01061a', border: '1px solid #0b1f5c', borderRadius: 2,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <div style={{ width: 12, height: 8, border: '1px solid #0b1f5c', borderRadius: 1 }} />
                 </div>
-                <div className="text-[var(--text-muted)] text-xs truncate">{camera.location}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: sel ? '#4d72e8' : '#dce5f5' }}>{cam.name}</span>
+                    <span style={{ display: 'inline-block', width: 5, height: 5, borderRadius: '50%', background: '#22c55e', flexShrink: 0 }} />
+                  </div>
+                  <span style={{ fontSize: 9, color: '#2d4280', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {cam.location}
+                  </span>
+                </div>
               </div>
-              <span className="text-[var(--success-green)] text-[10px] font-semibold">Online</span>
-            </div>
-          );
+            );
           })}
         </div>
       </div>
 
-      {/* Active Alerts Section */}
-      <div className="p-4 border-b border-[var(--vf-border)]">
-        <h4 className="text-[var(--text-muted)] text-[10px] uppercase tracking-wide mb-3">Active alerts</h4>
-        <div className="flex flex-col gap-2">
-          {alerts.map((alert) => (
-            <div
-              key={alert.id}
-              className="flex items-start gap-3 p-2 rounded hover:bg-[var(--surface-raised)] cursor-pointer transition-colors"
-            >
-              <div
-                className={`w-8 h-8 rounded flex items-center justify-center flex-shrink-0 ${
-                  alert.severity === 'high' ? 'bg-[var(--red-tint)]' : 'bg-[var(--amber-tint)]'
-                }`}
-              >
-                {alert.severity === 'high' ? (
-                  <ShieldAlert size={16} className="text-[var(--alert-red)]" />
-                ) : (
-                  <AlertCircle size={16} className="text-[var(--warning-amber)]" />
-                )}
+      {/* ── Active Alerts ── */}
+      <div style={{ flexShrink: 0, borderBottom: '1px solid #0b1f5c' }}>
+        <SectionHead title="Active Alerts" count={ALERTS.length} />
+        <div style={{ padding: '0 6px 6px' }}>
+          {ALERTS.map((a, i) => (
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', gap: 7,
+              padding: '4px 6px', borderRadius: 3, cursor: 'pointer',
+              marginBottom: 2, transition: 'background 0.12s',
+            }}>
+              <div style={{
+                width: 24, height: 24, borderRadius: 3, flexShrink: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: a.high ? 'rgba(239,68,68,0.12)' : 'rgba(234,179,8,0.12)',
+              }}>
+                {a.high
+                  ? <ShieldAlert size={13} color="#ef4444" />
+                  : <AlertTriangle size={13} color="#eab308" />
+                }
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-[var(--text-primary)] text-sm font-semibold font-mono">
-                  {alert.plate}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#dce5f5' }}>{a.plate}</span>
+                  <span style={{ fontSize: 9, color: '#2d4280' }}>{a.time}</span>
                 </div>
-                <div className="text-[var(--text-secondary)] text-xs">{alert.type}</div>
-                <div className="text-[var(--text-muted)] text-[10px] mt-1">{alert.time}</div>
+                <span style={{ fontSize: 9, color: '#7a9cc8', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {a.type}
+                </span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Hotlist Lookup Section */}
-      <div className="p-4 flex-1">
-        <h4 className="text-[var(--text-muted)] text-[10px] uppercase tracking-wide mb-3">Hotlist lookup</h4>
-        <div className="relative mb-3">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+      {/* ── Hotlist Lookup — flex:1 ── */}
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', padding: '6px 8px', gap: 8 }}>
+        <SectionHead title="Hotlist Lookup" />
+        {/* Search */}
+        <div style={{ position: 'relative', flexShrink: 0 }}>
+          <Search size={12} color="#2d4280" style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
           <input
             type="text"
-            placeholder="Enter plate number..."
-            className="w-full bg-[var(--surface-raised)] border border-[var(--vf-border)] rounded px-9 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--pure-blue)] focus:ring-opacity-40"
+            placeholder="Enter plate..."
+            style={{
+              width: '100%', padding: '5px 8px 5px 26px',
+              background: '#01061a', border: '1px solid #0b1f5c', borderRadius: 3,
+              color: '#dce5f5', fontSize: 11, outline: 'none',
+              transition: 'border-color 0.12s',
+            }}
+            onFocus={e => (e.target.style.borderColor = '#4d72e8')}
+            onBlur={e => (e.target.style.borderColor = '#0b1f5c')}
           />
         </div>
-        <div className="flex flex-wrap gap-2">
-          {hotlistTags.map((tag) => (
-            <div
-              key={tag.label}
-              className="px-3 py-1.5 rounded-full border text-xs font-semibold flex items-center gap-2"
-              style={{
-                borderColor: tag.color,
-                backgroundColor: `${tag.color}1A`,
-                color: tag.color,
-              }}
-            >
-              <span>{tag.label}</span>
-              <span className="font-mono">{tag.count}</span>
-            </div>
+        {/* Pills */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+          {PILLS.map(p => (
+            <span key={p.label} style={{
+              padding: '2px 8px', borderRadius: 3, fontSize: 10, fontWeight: 600,
+              border: `1px solid ${p.color}44`,
+              background: `${p.color}12`,
+              color: p.color,
+              display: 'flex', alignItems: 'center', gap: 5,
+              cursor: 'pointer',
+            }}>
+              <span>{p.label}</span>
+              <span style={{ opacity: 0.75, fontSize: 9 }}>{p.count}</span>
+            </span>
           ))}
         </div>
       </div>
+
     </div>
   );
 }

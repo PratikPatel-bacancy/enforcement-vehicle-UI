@@ -6,23 +6,36 @@ interface HistoryRecord {
   date: string;
   time: string;
   camera: string;
-  status: 'alert' | 'clear' | 'unknown';
+  status: 'alert' | 'clear' | 'unknown' | 'expired';
   statusLabel: string;
   confidence: string;
   region: string;
 }
 
 const mockHistory: HistoryRecord[] = [
-  { id: 1, plate: '7XYZ492', date: '2026-04-17', time: '14:23:45', camera: 'CAM-01', status: 'alert', statusLabel: 'Hotlist', confidence: '98.4%', region: 'California' },
-  { id: 2, plate: 'ABC-1234', date: '2026-04-17', time: '14:22:18', camera: 'CAM-02', status: 'clear', statusLabel: 'Clear', confidence: '99.2%', region: 'New York' },
-  { id: 3, plate: 'TX5KM987', date: '2026-04-17', time: '14:21:03', camera: 'CAM-01', status: 'clear', statusLabel: 'Clear', confidence: '97.8%', region: 'Texas' },
-  { id: 4, plate: 'FL8923K', date: '2026-04-17', time: '14:19:47', camera: 'CAM-03', status: 'unknown', statusLabel: 'Unknown', confidence: '85.3%', region: 'Florida' },
-  { id: 5, plate: 'NY5HJ729', date: '2026-04-17', time: '14:18:22', camera: 'CAM-04', status: 'clear', statusLabel: 'Clear', confidence: '96.7%', region: 'New York' },
-  { id: 6, plate: 'IL3BN456', date: '2026-04-17', time: '14:16:55', camera: 'CAM-02', status: 'clear', statusLabel: 'Clear', confidence: '98.9%', region: 'Illinois' },
-  { id: 7, plate: 'TX7BK891', date: '2026-04-17', time: '14:15:30', camera: 'CAM-01', status: 'alert', statusLabel: 'Stolen', confidence: '99.5%', region: 'Texas' },
-  { id: 8, plate: 'CA8WP234', date: '2026-04-17', time: '14:14:12', camera: 'CAM-03', status: 'clear', statusLabel: 'Clear', confidence: '97.3%', region: 'California' },
-  { id: 9, plate: 'AZ4MR567', date: '2026-04-17', time: '14:12:45', camera: 'CAM-02', status: 'clear', statusLabel: 'Clear', confidence: '98.1%', region: 'Arizona' },
-  { id: 10, plate: 'NV2PQ890', date: '2026-04-17', time: '14:11:30', camera: 'CAM-04', status: 'unknown', statusLabel: 'Unknown', confidence: '82.6%', region: 'Nevada' },
+  // ── Today 05/04/2026 — matches LiveMonitor Recent Reads ──
+  { id: 1,  plate: 'JLW8931',  date: '05/04/2026', time: '10:42:03 AM', camera: 'LYNET-01', status: 'alert',   statusLabel: 'Hotlist',     confidence: '98.7%', region: 'Texas'      },
+  { id: 2,  plate: '8SAM415',  date: '05/04/2026', time: '10:41:58 AM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '96.1%', region: 'California' },
+  { id: 3,  plate: 'GHJ4521',  date: '05/04/2026', time: '10:41:52 AM', camera: 'LYNET-02', status: 'clear',   statusLabel: 'Clear',       confidence: '95.4%', region: 'Illinois'   },
+  { id: 4,  plate: 'MPF8837',  date: '05/04/2026', time: '10:41:47 AM', camera: 'LYNET-01', status: 'expired', statusLabel: 'Expired Reg', confidence: '92.6%', region: 'Florida'    },
+  { id: 5,  plate: 'LKP2294',  date: '05/04/2026', time: '10:41:41 AM', camera: 'LYNET-02', status: 'clear',   statusLabel: 'Clear',       confidence: '94.8%', region: 'Nevada'     },
+  { id: 6,  plate: 'TXK9823',  date: '05/04/2026', time: '10:41:35 AM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '97.2%', region: 'Texas'      },
+  { id: 7,  plate: 'CA7PQ456', date: '05/04/2026', time: '10:41:29 AM', camera: 'LYNET-02', status: 'alert',   statusLabel: 'Hotlist',     confidence: '99.1%', region: 'California' },
+  { id: 8,  plate: 'AZ2MN781', date: '05/04/2026', time: '10:41:22 AM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '93.8%', region: 'Arizona'    },
+  { id: 9,  plate: 'FL6WX342', date: '05/04/2026', time: '10:41:15 AM', camera: 'LYNET-02', status: 'expired', statusLabel: 'Expired Reg', confidence: '91.4%', region: 'Florida'    },
+  { id: 10, plate: 'NY8JK517', date: '05/04/2026', time: '10:41:08 AM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '96.5%', region: 'New York'   },
+  // ── Yesterday 05/03/2026 ──
+  { id: 11, plate: 'TX5KM987', date: '05/03/2026', time: '09:14:03 AM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '97.8%', region: 'Texas'      },
+  { id: 12, plate: 'IL3BN456', date: '05/03/2026', time: '09:13:55 AM', camera: 'LYNET-02', status: 'clear',   statusLabel: 'Clear',       confidence: '98.9%', region: 'Illinois'   },
+  { id: 13, plate: 'OH4RT729', date: '05/03/2026', time: '08:47:22 AM', camera: 'LYNET-01', status: 'alert',   statusLabel: 'Stolen',      confidence: '99.5%', region: 'Ohio'       },
+  { id: 14, plate: 'CO9XB412', date: '05/03/2026', time: '08:31:14 AM', camera: 'LYNET-02', status: 'expired', statusLabel: 'Expired Reg', confidence: '90.2%', region: 'Colorado'   },
+  { id: 15, plate: 'WA7PM635', date: '05/03/2026', time: '08:12:48 AM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '96.4%', region: 'Washington' },
+  // ── 05/02/2026 ──
+  { id: 16, plate: 'NV2PQ890', date: '05/02/2026', time: '03:32:18 PM', camera: 'LYNET-02', status: 'unknown', statusLabel: 'Unknown',     confidence: '82.6%', region: 'Nevada'     },
+  { id: 17, plate: 'GA8WP234', date: '05/02/2026', time: '03:31:05 PM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '97.3%', region: 'Georgia'    },
+  { id: 18, plate: 'TN5KL927', date: '05/02/2026', time: '02:14:33 PM', camera: 'LYNET-02', status: 'alert',   statusLabel: 'Hotlist',     confidence: '98.8%', region: 'Tennessee'  },
+  { id: 19, plate: 'MO3BJ481', date: '05/02/2026', time: '01:58:22 PM', camera: 'LYNET-01', status: 'clear',   statusLabel: 'Clear',       confidence: '95.1%', region: 'Missouri'   },
+  { id: 20, plate: 'SC6WX318', date: '05/02/2026', time: '01:44:07 PM', camera: 'LYNET-02', status: 'expired', statusLabel: 'Expired Reg', confidence: '89.7%', region: 'S. Carolina' },
 ];
 
 export function History() {
@@ -31,6 +44,7 @@ export function History() {
       case 'alert': return 'var(--alert-red)';
       case 'clear': return 'var(--success-green)';
       case 'unknown': return 'var(--warning-amber)';
+      case 'expired': return '#f97316';
       default: return 'var(--text-muted)';
     }
   };
@@ -75,7 +89,6 @@ export function History() {
               <th className="text-left px-4 py-3 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Time</th>
               <th className="text-left px-4 py-3 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Camera</th>
               <th className="text-left px-4 py-3 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Status</th>
-              <th className="text-left px-4 py-3 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Confidence</th>
               <th className="text-left px-4 py-3 text-[var(--text-muted)] text-xs uppercase tracking-wide font-semibold">Region</th>
             </tr>
           </thead>
@@ -107,9 +120,6 @@ export function History() {
                   >
                     {record.statusLabel}
                   </span>
-                </td>
-                <td className="px-4 py-3 text-[var(--text-secondary)] font-mono text-sm">
-                  {record.confidence}
                 </td>
                 <td className="px-4 py-3 text-[var(--text-secondary)] text-sm">
                   {record.region}
