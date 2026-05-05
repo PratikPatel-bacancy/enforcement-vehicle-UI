@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { TODAY_STATS } from '../../data/vehicleConfig';
 
 // ── Shared data type ───────────────────────────────────────────────────────
 
@@ -100,7 +101,7 @@ function PlateGraphic({ plate, state, region }: { plate: string; state: string; 
   const isTX = state === 'TX';
   const isCA = state === 'CA';
   const bg    = isTX ? 'linear-gradient(180deg,#f5f2ec 0%,#ebe6da 100%)' : isCA ? 'linear-gradient(180deg,#fff 0%,#f0f4ff 100%)' : 'linear-gradient(180deg,#f4f6ff 0%,#e8ecfa 100%)';
-  const border = isTX ? '#8b7355' : isCA ? '#1a4fad' : '#4a6aaa';
+  const border = isTX ? '#8b7355' : isCA ? '#1a4fad' : '#8aacd4';
   const hdrColor = isTX ? '#8b4513' : isCA ? '#b22234' : '#1a3a7a';
   const hdr = isTX ? '★ TEXAS ★' : isCA ? 'California' : region.toUpperCase();
   const hdrFont = isCA ? 'Georgia, serif' : undefined;
@@ -135,7 +136,7 @@ function CameraFeed({ read }: { read: ReadEntry }) {
   const alertColor = read.status === 'HOTLIST' ? '#ef4444' : read.status === 'EXPIRED REG' ? '#f97316' : '#22c55e';
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: '#010518' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: '#040e30' }}>
       <img
         key={read.camImg}
         src={read.camImg}
@@ -193,7 +194,7 @@ function CameraFeed({ read }: { read: ReadEntry }) {
 
       {/* Top-left — REC */}
       <div style={{ position: 'absolute', top: 8, left: 10, display: 'flex', alignItems: 'center', gap: 5, color: '#c8d8f0', fontSize: 11 }}>
-        <span>LYNET-01</span><span style={{ color: '#162a5e' }}>|</span>
+        <span>LYNET-01</span><span style={{ color: '#1e3a70' }}>|</span>
         <span style={{ color: '#ef4444', fontWeight: 700, letterSpacing: '0.06em' }}>REC</span>
         <span style={{ display: 'inline-block', width: 5, height: 5, borderRadius: '50%', background: '#ef4444', animation: 'blink 1.2s step-start infinite' }} />
       </div>
@@ -211,7 +212,7 @@ function CameraFeed({ read }: { read: ReadEntry }) {
 
 
       {/* Bottom-left */}
-      <div style={{ position: 'absolute', bottom: 8, left: 10, color: '#b0c4e0', fontSize: 11, fontFamily: 'ui-monospace, monospace', lineHeight: 1.5 }}>
+      <div style={{ position: 'absolute', bottom: 8, left: 10, color: '#d4e8ff', fontSize: 11, fontFamily: 'ui-monospace, monospace', lineHeight: 1.5 }}>
         <div>{ts} CST</div>
         <div>32.9226° N &nbsp;97.0897° W</div>
       </div>
@@ -219,7 +220,7 @@ function CameraFeed({ read }: { read: ReadEntry }) {
       {/* Bottom-right badges */}
       <div style={{ position: 'absolute', bottom: 8, right: 10, display: 'flex', gap: 4 }}>
         {['HD', '1080p', 'PTZ'].map(b => (
-          <span key={b} style={{ padding: '1px 5px', border: '1px solid #1a3570', borderRadius: 2, color: '#8aabcc', fontSize: 10, background: 'rgba(1,5,24,0.8)' }}>{b}</span>
+          <span key={b} style={{ padding: '1px 5px', border: '1px solid #1e3a70', borderRadius: 2, color: '#c0d8f0', fontSize: 10, background: 'rgba(1,5,24,0.8)' }}>{b}</span>
         ))}
       </div>
     </div>
@@ -244,14 +245,14 @@ function AlertsPanel({ read }: { read: ReadEntry }) {
   const confNum = parseFloat(read.conf);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#010e2e', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#071c48', overflow: 'hidden' }}>
       {/* Tab switcher */}
       <div style={{ display: 'flex', borderBottom: '1px solid #0b1f5c', flexShrink: 0 }}>
         {(['alerts', 'vehicle'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)} style={{
             flex: 1, padding: '8px 0', background: 'none', border: 'none', cursor: 'pointer',
             fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
-            color: tab === t ? '#4d72e8' : '#6a88b0',
+            color: tab === t ? '#4d72e8' : '#a8c4e0',
             borderBottom: tab === t ? '2px solid #4d72e8' : '2px solid transparent',
             transition: 'color 0.15s',
           }}>
@@ -277,7 +278,7 @@ function AlertsPanel({ read }: { read: ReadEntry }) {
           {/* Confidence */}
           <div style={{ flexShrink: 0 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontSize: 10, color: '#9ab4cc', letterSpacing: '0.06em' }}>OCR CONFIDENCE</span>
+              <span style={{ fontSize: 10, color: '#c8def4', letterSpacing: '0.06em' }}>OCR CONFIDENCE</span>
               <span style={{ fontSize: 11, fontWeight: 700, color: '#22c55e' }}>{read.conf}</span>
             </div>
             <div style={{ height: 5, background: '#0b1f5c', borderRadius: 3, overflow: 'hidden' }}>
@@ -295,7 +296,7 @@ function AlertsPanel({ read }: { read: ReadEntry }) {
               ['Watchlist Hit',  read.watchlistHit],
             ].map(([label, value]) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: '1px solid rgba(11,31,92,0.5)' }}>
-                <span style={{ fontSize: 11, color: '#8aabcc', fontWeight: 500 }}>{label}</span>
+                <span style={{ fontSize: 11, color: '#c0d8f0', fontWeight: 500 }}>{label}</span>
                 <span style={{ fontSize: 11, fontWeight: label === 'Watchlist Hit' ? 700 : 500, color: label === 'Watchlist Hit' && read.watchlistHit !== 'NO' ? '#ef4444' : '#dce8f8' }}>{value}</span>
               </div>
             ))}
@@ -304,12 +305,12 @@ function AlertsPanel({ read }: { read: ReadEntry }) {
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 0 }}>
           <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexShrink: 0 }}>
-            <div style={{ flex: 1, background: '#010c26', border: '1px solid #0b1f5c', borderRadius: 5, padding: '6px 10px' }}>
-              <div style={{ fontSize: 9, color: '#8aabcc', letterSpacing: '0.06em', marginBottom: 2 }}>MAKE / MODEL</div>
+            <div style={{ flex: 1, background: '#051535', border: '1px solid #0b1f5c', borderRadius: 5, padding: '6px 10px' }}>
+              <div style={{ fontSize: 9, color: '#c0d8f0', letterSpacing: '0.06em', marginBottom: 2 }}>MAKE / MODEL</div>
               <div style={{ fontSize: 12, fontWeight: 700, color: '#e8f2ff' }}>{read.make} {read.model}</div>
             </div>
-            <div style={{ flex: 1, background: '#010c26', border: '1px solid #0b1f5c', borderRadius: 5, padding: '6px 10px' }}>
-              <div style={{ fontSize: 9, color: '#8aabcc', letterSpacing: '0.06em', marginBottom: 2 }}>YEAR / COLOR</div>
+            <div style={{ flex: 1, background: '#051535', border: '1px solid #0b1f5c', borderRadius: 5, padding: '6px 10px' }}>
+              <div style={{ fontSize: 9, color: '#c0d8f0', letterSpacing: '0.06em', marginBottom: 2 }}>YEAR / COLOR</div>
               <div style={{ fontSize: 12, fontWeight: 700, color: '#e8f2ff' }}>{read.year} · {read.color}</div>
             </div>
           </div>
@@ -330,7 +331,7 @@ function AlertsPanel({ read }: { read: ReadEntry }) {
                         : '#dce8f8';
             return (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '5px 0', borderBottom: '1px solid rgba(11,31,92,0.4)' }}>
-                <span style={{ fontSize: 11, color: '#8aabcc', fontWeight: 500, whiteSpace: 'nowrap', marginRight: 8 }}>{label}</span>
+                <span style={{ fontSize: 11, color: '#c0d8f0', fontWeight: 500, whiteSpace: 'nowrap', marginRight: 8 }}>{label}</span>
                 <span style={{ fontSize: 11, fontWeight: 500, textAlign: 'right', color }}>{value}</span>
               </div>
             );
@@ -345,11 +346,11 @@ function AlertsPanel({ read }: { read: ReadEntry }) {
 
 function MapPanel() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#010e2e', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#071c48', overflow: 'hidden' }}>
       <div style={{ padding: '6px 10px', borderBottom: '1px solid #0b1f5c', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: '#c8d8f0', letterSpacing: '0.12em' }}>MAP</span>
-          <span style={{ fontSize: 10, color: '#8aabcc' }}>· UNIT 12 · GRAPEVINE, TX</span>
+          <span style={{ fontSize: 10, color: '#c0d8f0' }}>· UNIT 12 · GRAPEVINE, TX</span>
         </div>
         <span style={{ fontSize: 9, color: '#22c55e', letterSpacing: '0.06em' }}>LIVE</span>
       </div>
@@ -364,14 +365,14 @@ function MapPanel() {
         </div>
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(4,12,40,0.18)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(6,12,30,0.92)', backdropFilter: 'blur(6px)', border: '1px solid rgba(77,114,232,0.35)', borderRadius: 5, padding: '5px 9px' }}>
-          <div style={{ fontSize: 10, color: '#9ab4cc', letterSpacing: '0.08em' }}>UNIT LOCATION</div>
+          <div style={{ fontSize: 10, color: '#c8def4', letterSpacing: '0.08em' }}>UNIT LOCATION</div>
           <div style={{ fontSize: 12, fontWeight: 700, color: '#e8f2ff' }}>UNIT 12 · PATROL</div>
           <div style={{ fontSize: 10, color: '#6a9ae8', fontFamily: 'ui-monospace, monospace' }}>32.9226° N &nbsp;97.0897° W</div>
         </div>
         <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(6,12,30,0.92)', backdropFilter: 'blur(6px)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: 5, padding: '5px 9px', display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block', boxShadow: '0 0 6px #22c55e', animation: 'blink 2s ease-in-out infinite' }} />
           <div>
-            <div style={{ fontSize: 9, color: '#9ab4cc', letterSpacing: '0.08em' }}>RTK LOCK</div>
+            <div style={{ fontSize: 9, color: '#c8def4', letterSpacing: '0.08em' }}>RTK LOCK</div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#22c55e' }}>FIXED · ±0.02m</div>
           </div>
         </div>
@@ -393,25 +394,32 @@ const CAMERAS = [
 
 function CamerasPanel() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#010e2e', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#071c48', overflow: 'hidden' }}>
       <div style={{ padding: '6px 10px', borderBottom: '1px solid #0b1f5c', flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontSize: 11, fontWeight: 700, color: '#c8d8f0', letterSpacing: '0.12em' }}>CAMERAS</span>
         <span style={{ fontSize: 9, color: '#22c55e' }}>1 / 2 ONLINE</span>
       </div>
       <div style={{ flex: 1, padding: '8px', display: 'flex', flexDirection: 'column', gap: 8, overflowY: 'auto' }}>
         {CAMERAS.map(cam => (
-          <div key={cam.name} style={{ flex: 1, background: '#010c26', border: '1px solid #0b1f5c', borderRadius: 6, overflow: 'hidden', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {/* <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 55%, #0c1a3a 0%, #040a1c 70%, #020710 100%)', position: 'relative', overflow: 'hidden' }}>
+          <div key={cam.name} style={{ flex: 1, background: '#051535', border: '1px solid #0b1f5c', borderRadius: 6, overflow: 'hidden', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            {/* Camera device image */}
+            <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 55%, #0c1a3a 0%, #040a1c 70%, #020710 100%)', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(77,114,232,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(77,114,232,0.04) 1px,transparent 1px)', backgroundSize: '20px 20px', pointerEvents: 'none' }} />
-              <CameraIcon size={80} />
-              <div style={{ position: 'absolute', top: 6, right: 8, fontSize: 9, color: '#22c55e', fontFamily: 'ui-monospace, monospace', background: 'rgba(0,0,0,0.5)', padding: '1px 4px', borderRadius: 2 }}>30 fps</div>
+              <img
+                src="/lynet-camera.png"
+                alt={cam.name}
+                style={{ height: '82%', width: 'auto', objectFit: 'contain', filter: cam.online ? 'drop-shadow(0 0 10px rgba(34,197,94,0.35))' : 'drop-shadow(0 0 8px rgba(239,68,68,0.25)) grayscale(0.5) brightness(0.7)' }}
+              />
               {cam.online && (
                 <div style={{ position: 'absolute', top: 6, left: 8, display: 'flex', alignItems: 'center', gap: 3 }}>
                   <span style={{ width: 4, height: 4, borderRadius: '50%', background: '#ef4444', display: 'inline-block', animation: 'blink 1.2s step-start infinite' }} />
                   <span style={{ fontSize: 9, color: '#ef4444', fontWeight: 700 }}>REC</span>
                 </div>
               )}
-            </div> */}
+              {!cam.online && (
+                <div style={{ position: 'absolute', top: 6, left: 8, fontSize: 9, color: '#ef4444', fontWeight: 700, letterSpacing: '0.06em' }}>OFFLINE</div>
+              )}
+            </div>
             <div style={{ padding: '6px 10px', borderTop: `1px solid ${cam.online ? '#0b1f5c' : 'rgba(239,68,68,0.25)'}`, flexShrink: 0, background: cam.online ? 'transparent' : 'rgba(239,68,68,0.04)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: '#dce8f8', letterSpacing: '0.06em' }}>{cam.name}</div>
@@ -422,9 +430,9 @@ function CamerasPanel() {
               </div>
               {!cam.online && cam.lastHeartbeat && (
                 <div style={{ marginTop: 3, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ fontSize: 9, color: '#8aabcc' }}>Last heartbeat:</span>
+                  <span style={{ fontSize: 9, color: '#c0d8f0' }}>Last heartbeat:</span>
                   <span style={{ fontSize: 9, color: '#f97316', fontFamily: 'ui-monospace, monospace', fontWeight: 600 }}>{cam.lastHeartbeat}</span>
-                  <span style={{ fontSize: 9, color: '#6a88b0' }}>·</span>
+                  <span style={{ fontSize: 9, color: '#a8c4e0' }}>·</span>
                   <span style={{ fontSize: 9, color: '#f97316' }}>{cam.timeDiff}</span>
                 </div>
               )}
@@ -439,25 +447,25 @@ function CamerasPanel() {
 // ── Analytics Panel (Bottom Col 2) ────────────────────────────────────────
 
 const METRICS = [
-  { name: 'Total Reads',         value: '3,862' },
-  { name: 'Watchlist Hits',      value: '27'    },
-  { name: 'Confidence Avg',      value: '96.3%' },
-  { name: 'Patrol Coverage',     value: '8.4 mi'},
-  { name: 'Dwell Alerts',        value: '14'    },
-  { name: 'Enforcement Actions', value: '6'     },
+  { name: 'Total Scans Today',   value: String(TODAY_STATS.totalScans)                       },
+  { name: 'Unique Plates',       value: String(TODAY_STATS.uniquePlates)                     },
+  { name: 'Read Success Rate',   value: `${TODAY_STATS.readSuccessRate}%`                    },
+  { name: 'Hit Rate',            value: `${TODAY_STATS.hitRate}%`                            },
+  { name: 'Violations Today',    value: String(TODAY_STATS.violationsToday)                  },
+  { name: 'Enforcement Actions', value: String(TODAY_STATS.enforcementActions)               },
 ];
 
 function AnalyticsPanel() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#010e2e', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#071c48', overflow: 'hidden' }}>
       <div style={{ padding: '6px 10px', borderBottom: '1px solid #0b1f5c', flexShrink: 0 }}>
         <span style={{ fontSize: 11, fontWeight: 700, color: '#c8d8f0', letterSpacing: '0.12em' }}>ANALYTICS</span>
-        <span style={{ fontSize: 9, color: '#8aabcc', marginLeft: 6 }}>Grapevine, TX · Today</span>
+        <span style={{ fontSize: 9, color: '#c0d8f0', marginLeft: 6 }}>Grapevine, TX · Today</span>
       </div>
       <div style={{ flex: 1, padding: '8px', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr 1fr', gap: 6, overflow: 'hidden' }}>
         {METRICS.map(m => (
-          <div key={m.name} style={{ background: '#010c26', border: '1px solid #0b1f5c', borderRadius: 5, padding: '7px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6, minHeight: 0 }}>
-            <div style={{ fontSize: 10, color: '#8aabcc', letterSpacing: '0.05em', lineHeight: 1.2 }}>{m.name}</div>
+          <div key={m.name} style={{ background: '#051535', border: '1px solid #0b1f5c', borderRadius: 5, padding: '7px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6, minHeight: 0 }}>
+            <div style={{ fontSize: 10, color: '#c0d8f0', letterSpacing: '0.05em', lineHeight: 1.2 }}>{m.name}</div>
             <div style={{ fontSize: 20, fontWeight: 900, color: '#e8f2ff', letterSpacing: '0.02em', lineHeight: 1 }}>{m.value}</div>
           </div>
         ))}
@@ -474,11 +482,11 @@ function RecentReadsPanel({ onNavigate, onSelect, selectedIdx }: {
   selectedIdx: number;
 }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#010e2e', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#071c48', overflow: 'hidden' }}>
       <div style={{ padding: '6px 10px', borderBottom: '1px solid #0b1f5c', flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <span style={{ fontSize: 11, fontWeight: 700, color: '#c8d8f0', letterSpacing: '0.12em' }}>RECENT READS</span>
-          <span style={{ fontSize: 9, color: '#8aabcc', marginLeft: 6 }}>Last 5 min</span>
+          <span style={{ fontSize: 9, color: '#c0d8f0', marginLeft: 6 }}>Last 5 min</span>
         </div>
         <button onClick={() => onNavigate?.('history')} style={{ fontSize: 10, color: '#4d72e8', background: 'none', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'underline', textUnderlineOffset: 2 }}>
           View All
@@ -488,7 +496,7 @@ function RecentReadsPanel({ onNavigate, onSelect, selectedIdx }: {
       {/* Table header */}
       <div style={{ display: 'grid', gridTemplateColumns: '22% 10% 24% 44%', padding: '5px 10px', borderBottom: '1px solid #0b1f5c', flexShrink: 0 }}>
         {['PLATE', 'ST', 'TIME', 'LOCATION'].map(h => (
-          <span key={h} style={{ fontSize: 9, fontWeight: 700, color: '#6a88b0', letterSpacing: '0.07em' }}>{h}</span>
+          <span key={h} style={{ fontSize: 9, fontWeight: 700, color: '#a8c4e0', letterSpacing: '0.07em' }}>{h}</span>
         ))}
       </div>
 
@@ -513,9 +521,9 @@ function RecentReadsPanel({ onNavigate, onSelect, selectedIdx }: {
               }}
             >
               <span style={{ fontSize: 11, fontWeight: 700, color: isHot ? '#fca5a5' : '#e8f2ff', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.06em' }}>{r.plate}</span>
-              <span style={{ fontSize: 10, color: '#9ab4cc', fontFamily: 'ui-monospace, monospace' }}>{r.state}</span>
-              <span style={{ fontSize: 10, color: '#c0d4ec', fontFamily: 'ui-monospace, monospace' }}>{r.time}</span>
-              <span style={{ fontSize: 10, color: '#8aabcc', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.location}</span>
+              <span style={{ fontSize: 10, color: '#c8def4', fontFamily: 'ui-monospace, monospace' }}>{r.state}</span>
+              <span style={{ fontSize: 10, color: '#dceeff', fontFamily: 'ui-monospace, monospace' }}>{r.time}</span>
+              <span style={{ fontSize: 10, color: '#c0d8f0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.location}</span>
             </div>
           );
         })}
@@ -530,31 +538,23 @@ export function LiveMonitor({ onNavigate }: { onNavigate?: (tab: string) => void
   const [selectedIdx, setSelectedIdx] = useState(0);
   const read = READS[selectedIdx];
 
+  const cardStyle: React.CSSProperties = {
+    minHeight: 0, overflow: 'hidden', borderRadius: 8, border: '1px solid #0d2460',
+  };
+
   return (
-    <div style={{ display: 'grid', gridTemplateRows: '60% 40%', height: '100%', overflow: 'hidden' }}>
+    <div style={{ display: 'grid', gridTemplateRows: '60% 40%', height: '100%', overflow: 'hidden', background: '#00030c' }}>
       {/* Top row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '40% 35% 25%', gap: 8, padding: 8, minHeight: 0 }}>
-        <div style={{ minHeight: 0, overflow: 'hidden', borderRadius: 6, border: '1px solid #0b1f5c' }}>
-          <CameraFeed read={read} />
-        </div>
-        <div style={{ minHeight: 0, overflow: 'hidden', borderRadius: 6, border: '1px solid #0b1f5c' }}>
-          <AlertsPanel read={read} />
-        </div>
-        <div style={{ minHeight: 0, overflow: 'hidden', borderRadius: 6, border: '1px solid #0b1f5c' }}>
-          <MapPanel />
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '40fr 35fr 25fr', gap: 10, padding: '10px 10px 5px 10px', minHeight: 0 }}>
+        <div style={cardStyle}><CameraFeed read={read} /></div>
+        <div style={cardStyle}><AlertsPanel read={read} /></div>
+        <div style={cardStyle}><MapPanel /></div>
       </div>
       {/* Bottom row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '25% 35% 40%', gap: 8, padding: '0 8px 8px', minHeight: 0 }}>
-        <div style={{ minHeight: 0, overflow: 'hidden', borderRadius: 6, border: '1px solid #0b1f5c' }}>
-          <CamerasPanel />
-        </div>
-        <div style={{ minHeight: 0, overflow: 'hidden', borderRadius: 6, border: '1px solid #0b1f5c' }}>
-          <AnalyticsPanel />
-        </div>
-        <div style={{ minHeight: 0, overflow: 'hidden', borderRadius: 6, border: '1px solid #0b1f5c' }}>
-          <RecentReadsPanel onNavigate={onNavigate} onSelect={setSelectedIdx} selectedIdx={selectedIdx} />
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '25fr 35fr 40fr', gap: 10, padding: '5px 10px 10px 10px', minHeight: 0 }}>
+        <div style={cardStyle}><CamerasPanel /></div>
+        <div style={cardStyle}><AnalyticsPanel /></div>
+        <div style={cardStyle}><RecentReadsPanel onNavigate={onNavigate} onSelect={setSelectedIdx} selectedIdx={selectedIdx} /></div>
       </div>
     </div>
   );

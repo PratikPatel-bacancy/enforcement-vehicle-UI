@@ -169,7 +169,7 @@ const TABS = [
   { id: 'monitor',    label: 'Monitor',    Icon: IconMonitor },
   { id: 'history',    label: 'History',    Icon: IconHistory },
   { id: 'violations', label: 'Violations', Icon: IconViolations },
-  { id: 'reports',    label: 'Reports',    Icon: IconReports },
+  { id: 'reports',    label: 'Analytics',  Icon: IconReports },
   { id: 'settings',   label: 'Settings',   Icon: IconSettings },
 ];
 

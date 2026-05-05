@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { VEHICLE_CONFIG } from '../data/vehicleConfig';
 
 function SignalBars() {
   return (
@@ -145,8 +146,8 @@ export function StatusBar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
         <BadgeIcon />
         <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#e0eaf8', letterSpacing: '0.04em', lineHeight: 1.3 }}>OFC. J. ANDERSON</div>
-          <div style={{ fontSize: 9, color: '#7a9cc8', letterSpacing: '0.08em', lineHeight: 1.3 }}>ID: 4587</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#e0eaf8', letterSpacing: '0.04em', lineHeight: 1.3 }}>{VEHICLE_CONFIG.officer}</div>
+          <div style={{ fontSize: 9, color: '#7a9cc8', letterSpacing: '0.08em', lineHeight: 1.3 }}>ID: {VEHICLE_CONFIG.officerId}</div>
         </div>
       </div>
 
@@ -156,7 +157,7 @@ export function StatusBar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
         <CarIcon />
         <div>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#e0eaf8', letterSpacing: '0.04em', lineHeight: 1.3 }}>UNIT 12</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#e0eaf8', letterSpacing: '0.04em', lineHeight: 1.3 }}>{VEHICLE_CONFIG.unitDisplay}</div>
           <div style={{ fontSize: 9, color: '#7a9cc8', letterSpacing: '0.08em', lineHeight: 1.3 }}>PATROL</div>
         </div>
       </div>
