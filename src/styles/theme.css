@@ -2,17 +2,17 @@
 
 :root {
   --app-bg: #01061a;
-  --surface: #020b2e;
-  --surface-raised: #031040;
+  --surface: #071c48;
+  --surface-raised: #0a2255;
   --vf-border: #0b1f5c;
   --accent: #4d72e8;
   --primary: #0530AD;
   --success-green: #22c55e;
   --alert-red: #ef4444;
   --warning-amber: #eab308;
-  --text-primary: #e0eaf8;
-  --text-secondary: #7a9cc8;
-  --text-muted: #3a5490;
+  --text-primary: #f0f6ff;
+  --text-secondary: #c0d8f8;
+  --text-muted: #8aaad8;
 
   --background: var(--app-bg);
   --foreground: var(--text-primary);
